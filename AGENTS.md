@@ -72,6 +72,25 @@ Emissão fiscal (NFC-e/NF-e), integração TEF, consignado, vale-crédito, venda
 - Se o pedido conflitar com uma regra destes documentos, **avise** em vez de seguir em silêncio.
 - Em dúvida de negócio (regra fiscal, política de loja), pergunte; não presuma.
 
+## Banco e migrações (regras do projeto base)
+
+- A fonte de verdade do banco é o **histórico de migrações** em `apps/api/drizzle/`. `0000` é gerada pelo `drizzle-kit` a partir de `src/db/schema.ts`; `0001` (gatilhos, papéis, permissões) é escrita à mão. **`drizzle-kit push` é proibido** (não aplicaria os gatilhos).
+- Migração já aplicada **nunca é editada**; mudança vira uma migração nova (`pnpm --filter @loja/api exec drizzle-kit generate --custom --name=...` para SQL à mão).
+- Migrações rodam com o **dono do banco** (`DATABASE_URL`). A aplicação conecta com o papel **`loja_app`** (`APP_DATABASE_URL`), que não pode `UPDATE`, `DELETE` nem `TRUNCATE` no ledger.
+- Tabelas novas exigem `GRANT` explícito ao `loja_app` na migração.
+- Testes de banco limpam com `session_replication_role = replica` (ver `apps/api/test/db.ts`); esse caminho existe só em teste.
+
 ## Comandos
 
-A preencher no setup do projeto (instalar, subir Docker, rodar migrações, rodar testes).
+```
+pnpm install                         # instala tudo (versões exatas, lockfile)
+pnpm test:db                         # sobe postgres-test, migra e roda os testes da API
+pnpm test:db:down                    # derruba o banco de teste
+pnpm lint | pnpm format              # Biome
+pnpm typecheck | pnpm build          # todos os workspaces
+pnpm --filter @loja/api dev          # API em modo watch (precisa de .env)
+pnpm --filter @loja/api db:migrate   # aplica migrações no banco de desenvolvimento
+pnpm --filter @loja/pdv dev          # PDV (Vite)
+```
+
+Nomes de teste carregam o ID do caso do documento (ex.: `T-03a`).

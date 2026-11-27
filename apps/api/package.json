@@ -1,0 +1,33 @@
+{
+  "name": "@loja/api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:test": "drizzle-kit migrate --config=drizzle.test.config.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nestjs/common": "12.6.2",
+    "@nestjs/core": "12.6.2",
+    "@nestjs/platform-express": "12.6.2",
+    "drizzle-orm": "0.45.4",
+    "postgres": "3.4.9",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "12.0.15",
+    "@nestjs/testing": "12.6.2",
+    "@types/node": "22.20.7",
+    "drizzle-kit": "0.31.11",
+    "vite": "8.3.8",
+    "vitest": "5.1.2"
+  }
+}

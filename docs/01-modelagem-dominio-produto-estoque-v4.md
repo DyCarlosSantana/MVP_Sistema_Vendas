@@ -501,6 +501,7 @@ Rascunho; vira matriz de permissões em tabela (não em código).
 | T-20 **[v4]** | Vendedor aplica desconto total de 5,00% e depois de 5,01% | Valida | 5,00% passa; 5,01% exige aprovação do Gerente; item + venda somados no limite |
 | T-21 **[v4]** | Devolução sem defeito, loja física, dentro do prazo | Registra | Só troca é permitida; estorno rejeitado (sem vale-crédito) |
 | T-22 **[v4.1]** | Troca de um item por outro de preço de tabela diferente | Registra | Rejeitada como troca; nenhuma diferença em dinheiro é gerada |
+| T-23 **[v4.1]** | Venda com 10% de desconto; troca por item de **mesmo preço de tabela** | Registra | Aceita; o item novo recebe os mesmos 10%; valor líquido igual ao original |
 
 ---
 
@@ -537,7 +538,7 @@ Rascunho; vira matriz de permissões em tabela (não em código).
 
 **Pendentes (nenhuma bloqueia o início do código)**
 - **N-02 (dono):** marca e modelo da impressora, quando houver. Se for só Bluetooth ou não tiver driver para Windows, o plano de impressão é revisto.
-- **N-10 (dono):** "mesmo valor" significa mesmo **preço de tabela** (ex.: mesmo produto em outro tamanho/cor, ou outro produto com o mesmo preço)? Se a venda original teve desconto, o item novo herda o mesmo desconto? Minha proposta: sim, o valor líquido pago se mantém.
+- **N-10 (resolvida pelo dono):** "mesmo valor" = mesmo **preço de tabela**; o desconto da venda original é aplicado ao item novo, e o valor líquido pago se mantém.
 - **N-01 (contador):** confirmação formal de que MEI sem venda a CNPJ dispensa emissão de nota no Amazonas.
 - **Ao comprar o leitor de código de barras:** escolher um que funcione como teclado (HID) e envie Enter ao final do código.
 

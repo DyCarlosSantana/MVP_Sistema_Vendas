@@ -1,0 +1,542 @@
+{
+  "id": "8fd4b015-a8b3-4499-a31f-08973c313dbf",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.categoria": {
+      "name": "categoria",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ativo": {
+          "name": "ativo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "categoria_nome_unique": {
+          "name": "categoria_nome_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nome"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.estoque_saldo": {
+      "name": "estoque_saldo",
+      "schema": "",
+      "columns": {
+        "variante_id": {
+          "name": "variante_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "saldo": {
+          "name": "saldo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "atualizado_em": {
+          "name": "atualizado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "estoque_saldo_variante_id_variante_id_fk": {
+          "name": "estoque_saldo_variante_id_variante_id_fk",
+          "tableFrom": "estoque_saldo",
+          "tableTo": "variante",
+          "columnsFrom": [
+            "variante_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.movimento_estoque": {
+      "name": "movimento_estoque",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "variante_id": {
+          "name": "variante_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_movimento",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantidade": {
+          "name": "quantidade",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "origem_tipo": {
+          "name": "origem_tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "origem_id": {
+          "name": "origem_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "motivo": {
+          "name": "motivo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estorno_de_id": {
+          "name": "estorno_de_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "usuario_id": {
+          "name": "usuario_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dispositivo_id": {
+          "name": "dispositivo_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chave_idempotencia": {
+          "name": "chave_idempotencia",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ocorrido_em": {
+          "name": "ocorrido_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "registrado_em": {
+          "name": "registrado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_mov_variante_data": {
+          "name": "ix_mov_variante_data",
+          "columns": [
+            {
+              "expression": "variante_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "registrado_em",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "movimento_estoque_variante_id_variante_id_fk": {
+          "name": "movimento_estoque_variante_id_variante_id_fk",
+          "tableFrom": "movimento_estoque",
+          "tableTo": "variante",
+          "columnsFrom": [
+            "variante_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "movimento_estoque_estorno_de_id_movimento_estoque_id_fk": {
+          "name": "movimento_estoque_estorno_de_id_movimento_estoque_id_fk",
+          "tableFrom": "movimento_estoque",
+          "tableTo": "movimento_estoque",
+          "columnsFrom": [
+            "estorno_de_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "movimento_estoque_chave_idempotencia_unique": {
+          "name": "movimento_estoque_chave_idempotencia_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "chave_idempotencia"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "qtd_nao_zero": {
+          "name": "qtd_nao_zero",
+          "value": "\"movimento_estoque\".\"quantidade\" <> 0"
+        },
+        "sinal_coerente": {
+          "name": "sinal_coerente",
+          "value": "(\"movimento_estoque\".\"tipo\" IN ('ENTRADA_COMPRA','DEVOLUCAO_CLIENTE') AND \"movimento_estoque\".\"quantidade\" > 0)\n        OR (\"movimento_estoque\".\"tipo\" IN ('SAIDA_VENDA','DEVOLUCAO_FORNECEDOR','PERDA_AVARIA') AND \"movimento_estoque\".\"quantidade\" < 0)\n        OR (\"movimento_estoque\".\"tipo\" IN ('AJUSTE_INVENTARIO','ESTORNO'))"
+        },
+        "motivo_obrigatorio": {
+          "name": "motivo_obrigatorio",
+          "value": "\"movimento_estoque\".\"tipo\" NOT IN ('AJUSTE_INVENTARIO','ESTORNO','PERDA_AVARIA') OR \"movimento_estoque\".\"motivo\" IS NOT NULL"
+        },
+        "estorno_referencia": {
+          "name": "estorno_referencia",
+          "value": "(\"movimento_estoque\".\"tipo\" = 'ESTORNO') = (\"movimento_estoque\".\"estorno_de_id\" IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.produto": {
+      "name": "produto",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "categoria_id": {
+          "name": "categoria_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "marca": {
+          "name": "marca",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "descricao": {
+          "name": "descricao",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "preco_venda_centavos": {
+          "name": "preco_venda_centavos",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ncm": {
+          "name": "ncm",
+          "type": "char(8)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cest": {
+          "name": "cest",
+          "type": "char(7)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ativo": {
+          "name": "ativo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "criado_em": {
+          "name": "criado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "atualizado_em": {
+          "name": "atualizado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "excluido_em": {
+          "name": "excluido_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "produto_categoria_id_categoria_id_fk": {
+          "name": "produto_categoria_id_categoria_id_fk",
+          "tableFrom": "produto",
+          "tableTo": "categoria",
+          "columnsFrom": [
+            "categoria_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "produto_preco_nao_negativo": {
+          "name": "produto_preco_nao_negativo",
+          "value": "\"produto\".\"preco_venda_centavos\" >= 0"
+        },
+        "produto_ncm_formato": {
+          "name": "produto_ncm_formato",
+          "value": "\"produto\".\"ncm\" ~ '^[0-9]{8}$'"
+        },
+        "produto_cest_formato": {
+          "name": "produto_cest_formato",
+          "value": "\"produto\".\"cest\" ~ '^[0-9]{7}$'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.variante": {
+      "name": "variante",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "produto_id": {
+          "name": "produto_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sku": {
+          "name": "sku",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codigo_barras": {
+          "name": "codigo_barras",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chave_variacao": {
+          "name": "chave_variacao",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "preco_custo_centavos": {
+          "name": "preco_custo_centavos",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "preco_venda_override_centavos": {
+          "name": "preco_venda_override_centavos",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estoque_minimo": {
+          "name": "estoque_minimo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "ativo": {
+          "name": "ativo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "criado_em": {
+          "name": "criado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "atualizado_em": {
+          "name": "atualizado_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "excluido_em": {
+          "name": "excluido_em",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "variante_produto_id_produto_id_fk": {
+          "name": "variante_produto_id_produto_id_fk",
+          "tableFrom": "variante",
+          "tableTo": "produto",
+          "columnsFrom": [
+            "produto_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "variante_sku_unique": {
+          "name": "variante_sku_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sku"
+          ]
+        },
+        "variante_codigo_barras_unique": {
+          "name": "variante_codigo_barras_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "codigo_barras"
+          ]
+        },
+        "variante_produto_chave_unica": {
+          "name": "variante_produto_chave_unica",
+          "nullsNotDistinct": false,
+          "columns": [
+            "produto_id",
+            "chave_variacao"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "variante_custo_nao_negativo": {
+          "name": "variante_custo_nao_negativo",
+          "value": "\"variante\".\"preco_custo_centavos\" >= 0"
+        },
+        "variante_override_nao_negativo": {
+          "name": "variante_override_nao_negativo",
+          "value": "\"variante\".\"preco_venda_override_centavos\" IS NULL OR \"variante\".\"preco_venda_override_centavos\" >= 0"
+        },
+        "variante_estoque_minimo_nao_negativo": {
+          "name": "variante_estoque_minimo_nao_negativo",
+          "value": "\"variante\".\"estoque_minimo\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.tipo_movimento": {
+      "name": "tipo_movimento",
+      "schema": "public",
+      "values": [
+        "ENTRADA_COMPRA",
+        "SAIDA_VENDA",
+        "DEVOLUCAO_CLIENTE",
+        "DEVOLUCAO_FORNECEDOR",
+        "PERDA_AVARIA",
+        "AJUSTE_INVENTARIO",
+        "ESTORNO"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -345,15 +345,15 @@ Regras: `log_auditoria` é **append-only** (mesmo trigger do ledger); **nunca** 
 - **Q-A5:** Gerente e ADM aprovam cancelamento e devolução (confirmado).
 - **Q-A6:** Gerente ou ADM revogam dispositivo (`dispositivo.revogar`).
 
-**Pendentes (não bloqueiam o código)**
-- **Q-A7 (dono):** concorda com a conta SUPORTE do desenvolvedor, com acesso a dados de produção só mediante a sua autorização, e com o procedimento de emergência da seção 5.7?
-- **Q-A8 (dono):** como não há Gerente, **fora do horário do dono** o Vendedor fica limitado a 5% e não cancela venda nem aprova devolução (só ADM aprova). Isso é aceitável, ou vale designar alguém como Gerente (inclusive o próprio Vendedor, se for de confiança)?
+**Respondidas pelo dono [v1.1]**
+- **Q-A7:** conta de Suporte do desenvolvedor autorizada, com acesso a dados reais só quando o dono liberar.
+- **Q-A8:** cancelamento, devolução e desconto acima de 5% são aprovados pelo **Gerente**. O ADM também tem essas permissões. Quem ocupa o perfil Gerente o dono ainda indica; até lá, o ADM (dono) aprova.
 
 ---
 
 ## 11. Próximos passos
 
-1. Dono responde Q-A7 e Q-A8.
+1. Sem pendências de negócio que bloqueiem o código (falta só o dono indicar quem será o Gerente).
 2. Registrar as ADRs dos documentos 01 e 02 em `docs/adr/`.
 3. Arquivo de contexto para Cursor/Antigravity: rascunho (`AGENTS.md`) enviado para curadoria.
 4. Subir o projeto base: repositório, Docker, Postgres, migrações e o módulo de autenticação, escrevendo primeiro os testes T-A01 a T-A18.
